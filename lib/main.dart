@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:test_assignment/intro_page.dart';
 import 'cart.dart';
-import 'shop_page_state.dart';
 
 void main() {
   runApp(
@@ -20,7 +19,18 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Shoe Shop',
-      home: IntroPage(),
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        scaffoldBackgroundColor: const Color(0xFFF6F6F6),
+        colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
+        useMaterial3: true,
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          iconTheme: IconThemeData(color: Colors.black),
+        ),
+      ),
+      home: const IntroPage(),
     );
   }
 }

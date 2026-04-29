@@ -3,96 +3,98 @@ import 'package:provider/provider.dart';
 import 'package:test_assignment/cart.dart';
 import 'package:test_assignment/shoe_tile.dart';
 
-class ShopPageState extends StatefulWidget {
-  @override
-  State<ShopPageState> createState() => _ShopPageStateState();
-}
+class ShopPageState extends StatelessWidget {
+  const ShopPageState({super.key});
 
-class _ShopPageStateState extends State<ShopPageState> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: const Color(0xFFF6F6F6),
-      body: SafeArea(
-        child: Consumer<Cart>(
-          builder: (context, cart, child) {
-            return Column(
-              children: [
+    return Consumer<Cart>(
+      builder: (context, cart, _) {
+        return SafeArea(
+          bottom: false,
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              const SizedBox(height: 10),
 
-                // SEARCH BAR
-                Container(
-                  padding: const EdgeInsets.all(12),
-                  margin: const EdgeInsets.symmetric(horizontal: 25),
+              // Search bar
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Container(
+                  height: 50,
+                  padding: const EdgeInsets.symmetric(horizontal: 12),
                   decoration: BoxDecoration(
                     color: Colors.grey[200],
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(12),
                   ),
                   child: const Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      Text('Search', style: TextStyle(color: Colors.grey)),
-                      Icon(Icons.search),
+                      Icon(Icons.search, color: Colors.grey),
+                      SizedBox(width: 10),
+                      Text('Search shoes...',
+                          style: TextStyle(color: Colors.grey)),
                     ],
                   ),
                 ),
+              ),
+              const SizedBox(height: 20),
 
-                const SizedBox(height: 12),
+              // Section header
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 16),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    const Text(
+                      'Hot Picks',
+                      style: TextStyle(
+                          fontWeight: FontWeight.bold, fontSize: 20),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        // TODO: navigate to full catalogue
+                      },
+                      child: const Text('See all'),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
 
-                // HEADER
-                Padding(
+              // Shoe list
+              Expanded(
+                child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
                   padding: const EdgeInsets.symmetric(horizontal: 16),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
-                      Text(
-                        'Hot Picks',
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
+                  itemCount: cart.shoeList.length,
+                  itemBuilder: (context, index) {
+                    final shoe = cart.shoeList[index];
+                    return Padding(
+                      padding: const EdgeInsets.only(right: 12),
+                      child: ShoeTile(
+                        shoe: shoe,
+                        onAddToCart: () {
+                          cart.addItemToCart(shoe);
+                          ScaffoldMessenger.of(context)
+                            ..hideCurrentSnackBar()
+                            ..showSnackBar(
+                              SnackBar(
+                                content: Text('${shoe.name} added to cart'),
+                                duration: const Duration(seconds: 1),
+                                behavior: SnackBarBehavior.floating,
+                              ),
+                            );
+                        },
                       ),
-                      Text(
-                        'See all',
-                        style: TextStyle(color: Colors.blue),
-                      ),
-                    ],
-                  ),
+                    );
+                  },
                 ),
-
-                const SizedBox(height: 10),
-
-                // 🔥 HORIZONTAL SHOE LIST (FIXED)
-                SizedBox(
-                  height: 260, // important for proper layout
-                  child: ListView.builder(
-  scrollDirection: Axis.horizontal,
-  physics: const BouncingScrollPhysics(), // 👈 ADD THIS
-  padding: const EdgeInsets.symmetric(horizontal: 16),
-  itemCount: cart.getShoeList().length,
-  itemBuilder: (context, index) {
-    final shoe = cart.getShoeList()[index];
-
-    return Padding(
-      padding: const EdgeInsets.only(right: 12),
-      child: ShoeTile(
-        shoe: shoe,
-        onAddToCart: () {
-          cart.addItemToCart(shoe);
-
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('${shoe.name} added to cart')),
-          );
-        },
-      ),
-    );
-  },
-),
-                ),
-              ],
-            );
-          },
-        ),
-      ),
+              ),
+              const SizedBox(height: 10),
+            ],
+          ),
+        );
+      },
     );
   }
 }

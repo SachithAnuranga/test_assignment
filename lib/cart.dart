@@ -1,32 +1,41 @@
 import 'package:flutter/foundation.dart';
 import 'package:test_assignment/model/shoe.dart';
 
-class Cart extends ChangeNotifier{
-  //List of Shape for sale
-  List<Shoe> shoeShop =[
-    Shoe(name: "Zoom Freak", price: '236', imagePath: "lib/image/zoom_freak.jpg", description: "The forward thinking design of his latest signed shoe"),
-     Shoe(name: "Air Jordan", price: '220', imagePath: "lib/image/air_jordan.jpg", description: "You've got the hope and the speed-lace up in shoes that enhance what you bring to thecour"),
-      Shoe(name: "Kd_tyres", price: '220', imagePath: "lib/image/Kd_tyres.png", description: "You've got the hope and the speed-lace up in shoes that enhance what you bring to thecour"),
+class Cart extends ChangeNotifier {
+  final List<Shoe> _shoeShop = [
+    Shoe(
+      name: 'Zoom Freak',
+      price: '236',
+      imagePath: 'lib/image/zoom_freak.jpg',
+      description: 'The forward-thinking design of his latest signed shoe.',
+    ),
+    Shoe(
+      name: 'Air Jordan',
+      price: '220',
+      imagePath: 'lib/image/air_jordan.jpg',
+      description: 'Lace up in shoes that enhance everything you bring to the court.',
+    ),
+    Shoe(
+      name: 'Kd Tyres',
+      price: '220',
+      imagePath: 'lib/image/Kd_tyres.png',
+      description: 'Lace up in shoes that enhance everything you bring to the court.',
+    ),
   ];
 
-  //list of items in user card
-  List<Shoe> userCard = [];
+  final List<Shoe> _userCart = [];
 
-  //get list of shoes for sale
-  List<Shoe> getShoeList() {return shoeShop;}
+  List<Shoe> get shoeList => List.unmodifiable(_shoeShop);
+  List<Shoe> get userCart => List.unmodifiable(_userCart);
+  int get cartCount => _userCart.length;
 
-  //get cart 
-  List<Shoe> getUserCart(){return userCard;}
-
-  //add item to cart
-  void addItemToCart(Shoe shoe){
-    userCard.add(shoe);
+  void addItemToCart(Shoe shoe) {
+    _userCart.add(shoe);
     notifyListeners();
   }
 
-  //remove item from cart
-  void removeItemFromCart(Shoe shoe){
-    userCard.remove(shoe);
+  void removeItemFromCart(Shoe shoe) {
+    _userCart.remove(shoe);
     notifyListeners();
   }
 }
