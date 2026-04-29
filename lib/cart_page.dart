@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:test_assignment/cart.dart';
-
 import 'cart_item.dart';
 
 class CartPage extends StatelessWidget {
-  const CartPage();
+  const CartPage({super.key}); // ✅ fixed: added super.key
 
   @override
   Widget build(BuildContext context) {
@@ -18,8 +17,10 @@ class CartPage extends StatelessWidget {
               children: [
                 Icon(Icons.shopping_bag_outlined, size: 64, color: Colors.grey),
                 SizedBox(height: 16),
-                Text('Your cart is empty',
-                    style: TextStyle(color: Colors.grey, fontSize: 16)),
+                Text(
+                  'Your cart is empty',
+                  style: TextStyle(color: Colors.grey, fontSize: 16),
+                ),
               ],
             ),
           );
@@ -33,7 +34,7 @@ class CartPage extends StatelessWidget {
                 itemCount: cart.userCart.length,
                 itemBuilder: (context, index) {
                   final shoe = cart.userCart[index];
-                  return CartItem(shoe: shoe); // ← your CartItem widget
+                  return CartItem(shoe: shoe);
                 },
               ),
             ),
